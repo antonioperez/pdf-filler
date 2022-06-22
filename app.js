@@ -8,12 +8,20 @@ async function fillForm() {
   const pdfDoc = await pdfService.readBasePdfFile('./docs/target.pdf');
   for (const data of dataTarget) {
     const form = pdfDoc.getForm();
-    const keys = Object.keys(data);
     const id = data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'];
-    const name = data['Name'] || data['name'];
+    const firstName = data['first name'] || data['First Name'];
+    const lastName = data['last name'] || data['Last Name'];
+    const skippedKeys = ['last name', 'first name'];
+    const name = `${firstName} ${lastName}`;
+    data['Name'] = name;
     
+    const keys = Object.keys(data);
     console.log(`\nprocessing id: ${id}`);
     for (const key of keys) {
+      if (skippedKeys.includes(key.toLowerCase())) {
+        continue;
+      }
+
       await pdfService.fillTextField(form, key, data[key]);
     }
 
