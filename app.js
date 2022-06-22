@@ -18,7 +18,7 @@ async function fillForm() {
     }
 
     const pdfBytes = await pdfDoc.save();
-    const fileName = `${name}-${id}.pdf`.replace(/\s+/g, '-').toLowerCase();
+    const fileName = `${id}-${name}.pdf`.replace(/\s+/g, '-').toLowerCase();
 
     fs.appendFileSync(`${outputDir}/${fileName}`, Buffer.from(pdfBytes));
   }
