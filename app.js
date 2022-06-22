@@ -10,6 +10,7 @@ async function fillForm() {
     const form = pdfDoc.getForm();
     const keys = Object.keys(data);
     const id = data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'];
+    const name = data['Name'] || data['name'];
     
     console.log(`\nprocessing id: ${id}`);
     for (const key of keys) {
@@ -18,7 +19,7 @@ async function fillForm() {
 
     const pdfBytes = await pdfDoc.save();
 
-    fs.appendFileSync(`${outputDir}/test-${id}.pdf`, Buffer.from(pdfBytes));
+    fs.appendFileSync(`${outputDir}/${name}-${id}.pdf`, Buffer.from(pdfBytes));
   }
 }
 
