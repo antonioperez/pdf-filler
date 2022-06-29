@@ -3,7 +3,12 @@ const fs = require("fs");
 
 module.exports = {
   readBasePdfFile,
-  fillTextField
+  fillTextField,
+  createBlankFile,
+}
+
+function createBlankFile() {
+  return pdfLib.PDFDocument.create();
 }
 
 function readBasePdfFile(filename) {
