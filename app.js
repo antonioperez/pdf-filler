@@ -10,7 +10,7 @@ function normalizePath(pathRoute){
 function readId(data) {
   const info = data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'] || data['ID#'];
 
-  return info.trim();
+  return info.trim().replace(/\?/g, '');
 }
 
 function readFirstName(data) {
