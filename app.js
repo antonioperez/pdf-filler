@@ -1,6 +1,11 @@
 const fs = require("fs");
 const fileReaderService = require('./services/file-reader.service');
 const pdfService = require('./services/pdf.service');
+const path = require('path');
+
+function normalizePath(pathRoute){
+  return path.join(__dirname, path.normalize(pathRoute));
+}
 
 function readId(data) {
   const info = data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'] || data['ID#'];
@@ -22,8 +27,8 @@ function readLastName(data) {
 
 async function fillForm() {
   const outputDir = './output';
-  const dataTarget = await fileReaderService.readCSVFile('./docs/data.csv');
-  const pdfDoc = await pdfService.readBasePdfFile('./docs/target.pdf');
+  const dataTarget = await fileReaderService.readCSVFile(normalizePath('./docs/data.csv'));
+  const pdfDoc = await pdfService.readBasePdfFile(normalizePath('./docs/target.pdf'));
   for (const data of dataTarget) {
     const form = pdfDoc.getForm();
     const id = readId(data);
@@ -46,15 +51,15 @@ async function fillForm() {
     const pdfBytes = await pdfDoc.save();
     const fileName = `${id}-${name}.pdf`.replace(/\s+/g, '-').toLowerCase();
 
-    fs.appendFileSync(`${outputDir}/${fileName}`, Buffer.from(pdfBytes));
+    fs.appendFileSync(normalizePath(`${outputDir}/${fileName}`), Buffer.from(pdfBytes));
   }
 }
 
 async function explodeFiles() {
   let startPageIndex = 0;
   const outputDir = './output';
-  const dataTarget = await fileReaderService.readCSVFile('./docs/explode/data.csv');
-  const pdfDoc = await pdfService.readBasePdfFile('./docs/explode/target.pdf');
+  const dataTarget = await fileReaderService.readCSVFile(normalizePath('./docs/explode/data.csv'));
+  const pdfDoc = await pdfService.readBasePdfFile(normalizePath('./docs/explode/target.pdf'));
   const pages = pdfDoc.getPages();
 
   for (const data of dataTarget) {
@@ -74,7 +79,7 @@ async function explodeFiles() {
     const pdfBytes = await pdfDoc.save();
     const fileName = `${lastName}, ${firstName} ${id} - CCAP Form CO26.pdf`.toLowerCase();
 
-    fs.appendFileSync(`${outputDir}/${fileName}`, Buffer.from(pdfBytes));
+    fs.appendFileSync(normalizePath(`${outputDir}/${fileName}`), Buffer.from(pdfBytes));
 
     startPageIndex++;
   }
