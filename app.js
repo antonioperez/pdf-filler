@@ -5,19 +5,19 @@ const pdfService = require('./services/pdf.service');
 function readId(data) {
   const info = data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'] || data['ID#'];
 
-  return info.replace(/\s+/g, '');
+  return info.trim();
 }
 
 function readFirstName(data) {
   const info = data['first name'] || data['First Name'] || data['First'] || data['first'];
 
-  return info.replace(/\s+/g, '');
+  return info.trim();
 }
 
 function readLastName(data) {
   const info = data['last name'] || data['Last Name'] || data['Last'] || data['last'];
 
-  return info.replace(/\s+/g, '');
+  return info.trim();
 }
 
 async function fillForm() {
@@ -82,8 +82,8 @@ async function explodeFiles() {
 
 (async function() {
   try {
-      await fillForm();
-      //await explodeFiles();
+      //await fillForm();
+      await explodeFiles();
   } catch (error) {
     console.log('runtime error', error.message || error);
   }
