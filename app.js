@@ -3,15 +3,21 @@ const fileReaderService = require('./services/file-reader.service');
 const pdfService = require('./services/pdf.service');
 
 function readId(data) {
-  return data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'] || data['ID#'];
+  const info = data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'] || data['ID#'];
+
+  return info.replace(/\s+/g, '');
 }
 
 function readFirstName(data) {
-  return data['first name'] || data['First Name'] || data['First'] || data['first'];
+  const info = data['first name'] || data['First Name'] || data['First'] || data['first'];
+
+  return info.replace(/\s+/g, '');
 }
 
 function readLastName(data) {
-  return data['last name'] || data['Last Name'] || data['Last'] || data['last'];
+  const info = data['last name'] || data['Last Name'] || data['Last'] || data['last'];
+
+  return info.replace(/\s+/g, '');
 }
 
 async function fillForm() {
