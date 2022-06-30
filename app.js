@@ -1,11 +1,6 @@
 const fs = require("fs");
 const fileReaderService = require('./services/file-reader.service');
 const pdfService = require('./services/pdf.service');
-const path = require('path');
-
-function readPath(pathRoute) {
-  return path.normalize(pathRoute);
-}
 
 function readId(data) {
   const info = data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'] || data['ID#'];
@@ -51,7 +46,7 @@ async function fillForm() {
     const pdfBytes = await pdfDoc.save();
     const fileName = `${id}-${name}.pdf`.replace(/\s+/g, '-').toLowerCase();
 
-    fs.appendFileSync(readPath(`${outputDir}/${fileName}`), Buffer.from(pdfBytes));
+    fs.appendFileSync(`${outputDir}/${fileName}`, Buffer.from(pdfBytes));
   }
 }
 
@@ -79,7 +74,7 @@ async function explodeFiles() {
     const pdfBytes = await pdfDoc.save();
     const fileName = `${lastName}, ${firstName} ${id} - CCAP Form CO26.pdf`.toLowerCase();
 
-    fs.appendFileSync(readPath(`${outputDir}/${fileName}`), Buffer.from(pdfBytes));
+    fs.appendFileSync(`${outputDir}/${fileName}`, Buffer.from(pdfBytes));
 
     startPageIndex++;
   }

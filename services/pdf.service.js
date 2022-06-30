@@ -1,6 +1,5 @@
 const pdfLib = require("pdf-lib");
 const fs = require("fs");
-const path = require('path');
 
 module.exports = {
   readBasePdfFile,
@@ -8,16 +7,12 @@ module.exports = {
   createBlankFile,
 }
 
-function readPath(pathRoute) {
-  return path.normalize(pathRoute);
-}
-
 function createBlankFile() {
   return pdfLib.PDFDocument.create();
 }
 
 function readBasePdfFile(filename) {
-  const formPdfBytes = fs.readFileSync(readPath(filename));
+  const formPdfBytes = fs.readFileSync(filename);
 
   return pdfLib.PDFDocument.load(formPdfBytes);
 }
