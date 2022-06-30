@@ -7,6 +7,10 @@ function normalizePath(pathRoute){
   return path.join(__dirname, path.normalize(pathRoute));
 }
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function readId(data) {
   const info = data['ID Number'] || data['ID'] || data['id'] || data['College ID'] || data['College id'] || data['college id'] || data['ID#'];
 
@@ -70,14 +74,17 @@ async function explodeFiles() {
     pdfDoc.addPage(targetPageCopy)
 
     const id = readId(data) || 'id-unknown';
-    const firstName = readFirstName(data) || 'first-unknown';
-    const lastName = readLastName(data) || 'last-unknown';
+    let firstName = readFirstName(data) || 'first-unknown';
+    let lastName = readLastName(data) || 'last-unknown';
+
+    firstName = capitalizeFirstLetter(firstName.toLowerCase());
+    lastName = capitalizeFirstLetter(lastName.toLowerCase());
 
     const name = `${firstName} ${lastName}`;    
     console.log(`\nprocessing id: ${id} ${name}`);
 
     const pdfBytes = await pdfDoc.save();
-    const fileName = `${lastName}, ${firstName} ${id} - CCAP Form CO26.pdf`.toLowerCase();
+    const fileName = `${lastName}, ${firstName} ${id} - CCAP Form CO26.pdf`;
 
     fs.appendFileSync(normalizePath(`${outputDir}/${fileName}`), Buffer.from(pdfBytes));
 
